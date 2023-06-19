@@ -1,11 +1,14 @@
 <SettingsScreen>
 
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
 
-        Label:
-            text: "Current Screen: " + root.name
+        MDTopAppBar:
+            title: "Settings"
+            use_overflow: True
+            left_action_items:[["arrow-left", lambda x: root.manager.goback()]]
+            
 
-        Button:
-            text: "GOTO HOME"
-            on_release: root.manager.goback()
+        MDLabel:
+            text: "Content"
+            halign: "center"

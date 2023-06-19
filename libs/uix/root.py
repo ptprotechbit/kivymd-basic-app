@@ -19,7 +19,7 @@ class Root(ScreenManager):
         with open(utils.abs_path("screens.json")) as f:
             self.screens_data = json.load(f)
 
-    def set_current(self, screen_name, side="left", _from_goback=False):
+    def set_current(self, screen_name, side="left", _from_goback=False, reload=False):
         """
         If you need to use more screens in your app,
         Create your screen files like below:
@@ -40,6 +40,10 @@ class Root(ScreenManager):
                         * Comments
 
         """
+        if reload:
+            Builder.unload_file(utils.abs_path(self.screens_data[screen_name]["kv"]))
+            for w in self.children[:]:
+                self.remove_widget(w)
 
         # checks that the screen already added to the screen-manager
         if not self.has_screen(screen_name):
