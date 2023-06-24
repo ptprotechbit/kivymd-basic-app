@@ -13,7 +13,7 @@ class MainApp(MDApp):
 
         Window.keyboard_anim_args = {"d": 0.2, "t": "linear"}
         Window.softinput_mode = "below_target"
-        Window.size = (1080,2220)
+        # Window.size = (1080,2220)
 
     def build(self):
         # Don't change self.root to self.some_other_name
