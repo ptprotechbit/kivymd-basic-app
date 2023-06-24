@@ -1,4 +1,3 @@
-from kivy.app import App
 from kivymd.app import MDApp
 from kivy.core.window import Window
 

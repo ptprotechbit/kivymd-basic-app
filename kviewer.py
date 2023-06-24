@@ -24,20 +24,19 @@ file changes.
 '''
 
 from sys import argv
-from kivy.lang import Builder
-from kivy.app import App
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.clock import Clock, mainthread
-from kivy.uix.label import Label
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-from os.path import dirname, basename, join
+from os.path import dirname, basename
+import os
 
 from libs.uix.root import Root
 
-from PIL import ImageGrab
+from dotenv import load_dotenv
+load_dotenv()
 
 if len(argv) != 2:
     print('usage: %s filename.kv' % argv[0])
@@ -45,8 +44,10 @@ if len(argv) != 2:
 
 init = 0
 
-PATH = dirname(argv[1])
-TARGET = basename(argv[1])
+KVFILE = f"libs/uix/kv/{argv[1]}_screen.kv"
+PATH = dirname(KVFILE)
+TARGET = basename(KVFILE)
+PAGE_NAME = argv[1]
 
 class KvHandler(FileSystemEventHandler):
     def __init__(self, callback, target, **kwargs):
@@ -67,31 +68,26 @@ class KvViewerApp(MDApp):
         Clock.schedule_once(self.update, 1)
         # return super(KvViewerApp, self).build()
         self.root = Root()
-        self.root.set_current(TARGET.split("_")[0])
+        self.root.set_current(PAGE_NAME)
 
     @mainthread
     def update(self, *args):
         print("update")
         global init
         if init > 0:
-            self.root.set_current(TARGET.split("_")[0], reload=True)
+            self.root.set_current(PAGE_NAME, reload=True)
         init = init + 1
-        # Builder.unload_file(join(PATH, TARGET))
-        # for w in Window.children[:]:
-        #     Window.remove_widget(w)
-        # try:
-        #     Window.add_widget(Builder.load_file(join(PATH, TARGET)))
-        # except Exception as e:
-        #     Window.add_widget(Label(text=(
-        #         e.message if getattr(e, r'message', None) else str(e)
-        #     )))
 
 
 if __name__ == '__main__':
     Window.maximize()
     resolution = Window.system_size
-    Window.size = (400,800)
-    Window.top = 0
-    Window.left = resolution[0] - 400
+    screen_preview_w = int(os.environ.get("SCREEN_PREVIEW_W", 400))
+    screen_preview_h = int(os.environ.get("SCRREN_PREVIEW_H", 800))
+    window_pos_top = int(os.environ.get("WINDOW_POS_TOP", 0))
+    window_pos_left = int(os.environ.get("WINDOW_POS_LEFT", 400))
+    Window.size = (screen_preview_w, screen_preview_h)
+    Window.top = window_pos_top
+    Window.left = resolution[0] - window_pos_left
 
     KvViewerApp().run()
