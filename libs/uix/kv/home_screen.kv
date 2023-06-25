@@ -6,14 +6,11 @@
         MDTopAppBar:
             title: "Home"
             use_overflow: True
-            adaptive_height: True
-            elevation: 4
+            elevation: 0
             right_action_items:
                 [
                 ["tools", lambda x: root.manager.set_current("settings"), "Setting", "Setting"]
                 ]
 
         MDBoxLayout:
-            MDLabel:
-                text: "Content"
-                halign: "center"
+            orientation: "vertical"

@@ -10,6 +10,7 @@ kivymd = "*"
 buildozer = "*"
 python-dotenv = "*"
 watchdog = "*"
+cython = "*"
 
 [requires]
 python_version = "3.11"
